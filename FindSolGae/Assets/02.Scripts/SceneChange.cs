@@ -11,6 +11,7 @@ public class SceneChange : MonoBehaviour
     }
     public void ChangeGameScene()
     {
+        Cursor.visible = false;
         SceneManager.LoadScene("Main Scene");
     }
 }

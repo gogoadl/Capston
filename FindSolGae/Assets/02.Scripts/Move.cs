@@ -67,6 +67,8 @@ public class Move : MonoBehaviour
         animator.SetBool("isRun", false);
         animator.SetBool("isJump", false);
         animator.SetBool("isGrounded", true);
+        animator.SetBool("isAttack", false);
+        animator.SetBool("isDie", false);
     }
 
     private void LateUpdate()
@@ -108,6 +110,7 @@ public class Move : MonoBehaviour
     void Update()
     {
         Rotation();
+        Attack();
 
         if(animator.GetBool("isJump"))
         {
@@ -154,31 +157,17 @@ public class Move : MonoBehaviour
     }
     void Rotation()
     {
-
+        // 마우스를 이용해 조종
         float getX = Input.GetAxis("Horizontal");
         float getY = Input.GetAxis("Vertical");
 
 
         lookDirection.Set(getX, 0, getY);   // 벡터 셋팅.
 
-        Debug.Log(Input.GetAxis("Horizontal"));
-
-        //if(Input.GetAxis("Horizontal") == null)
-        //{
-
-        //}
-
-        //Quaternion q = Quaternion.LookRotation(target.TransformDirection(lookDirection));  // 회전
-        
-        //this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(lookDirection), 300 * Time.deltaTime);
-        // 부드럽게 방향 회전을 위한 함수
-
         if (lookDirection != Vector3.zero)
         {
-
-        Quaternion q = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(lookDirection), 7 * Time.deltaTime);
-        transform.rotation = q;
-
+            Quaternion q = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(lookDirection), 7 * Time.deltaTime);
+            transform.rotation = q;
         }
     }
     private void OnCollisionEnter(Collision collision)
@@ -188,6 +177,23 @@ public class Move : MonoBehaviour
             jumpCount = 1;
             animator.SetBool("isGrounded", true);
             animator.SetBool("isJump", false);
+        }
+
+        if (collision.gameObject.tag == "Player")
+        {
+            Debug.Log(collision.collider);
+        }
+    }
+
+    void Attack()
+    {
+        if(Input.GetMouseButton(0))
+        {
+            animator.SetBool("isAttack", true);
+        }
+        else
+        {
+            animator.SetBool("isAttack", false);
         }
     }
 }
