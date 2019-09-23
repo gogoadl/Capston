@@ -49,7 +49,7 @@ public class Move : MonoBehaviour
     private void Start() // 초기화 함수
     {
 
-        Physics.gravity = new Vector3(0, -16.5f, 0); // 중력가속도를 16.5로 적용
+        Physics.gravity = new Vector3(0, -15.5f, 0); // 중력가속도를 16.5로 적용
 
         rigidbody = GetComponent<Rigidbody>();
 
@@ -122,7 +122,7 @@ public class Move : MonoBehaviour
                     animator.SetBool("isJump", true);
                 animator.SetBool("isGrounded", false);
                 jumpCount = 0;
-                rigidbody.AddForce(Vector3.up * 10f, ForceMode.Impulse);
+                rigidbody.AddForce(Vector3.up * 6.5f, ForceMode.Impulse);
 
             }
         }
@@ -154,15 +154,32 @@ public class Move : MonoBehaviour
     }
     void Rotation()
     {
-        lookDirection.Set(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));   // 벡터 셋팅.
-        
+
+        float getX = Input.GetAxis("Horizontal");
+        float getY = Input.GetAxis("Vertical");
+
+
+        lookDirection.Set(getX, 0, getY);   // 벡터 셋팅.
+
+        Debug.Log(Input.GetAxis("Horizontal"));
+
+        //if(Input.GetAxis("Horizontal") == null)
+        //{
+
+        //}
+
         //Quaternion q = Quaternion.LookRotation(target.TransformDirection(lookDirection));  // 회전
-        Quaternion q = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(lookDirection), 7 * Time.deltaTime);
+        
         //this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(lookDirection), 300 * Time.deltaTime);
         // 부드럽게 방향 회전을 위한 함수
 
         if (lookDirection != Vector3.zero)
-            transform.rotation = q;
+        {
+
+        Quaternion q = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(lookDirection), 7 * Time.deltaTime);
+        transform.rotation = q;
+
+        }
     }
     private void OnCollisionEnter(Collision collision)
     {
