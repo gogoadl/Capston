@@ -11,6 +11,8 @@ public class AIMove : MonoBehaviour
     Vector3 lookDirection;
 
     int state;
+
+    public bool isDie = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,9 +25,8 @@ public class AIMove : MonoBehaviour
         AIanimator.SetBool("isJump", false);
         AIanimator.SetBool("isGrounded", true);
 
+        
         state = (int)Random.Range(1, 4);
-
-
         InvokeRepeating("RandomState", state, 1);
         
 
@@ -34,43 +35,55 @@ public class AIMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        switch(state)
+        if (!isDie)
         {
-            case 1:
-                {
-                    
-                    AIanimator.SetFloat("Speed", 15.0f);
-                    AIanimator.SetBool("isRun", false);
-                    AIanimator.SetBool("isWalk", true);
-                    this.transform.Translate(Vector3.forward * AIanimator.GetFloat("Speed") * Time.deltaTime);
-                    break;
-                }
-            case 2:
-                {
-                    AIanimator.SetBool("isRun", false);
-                    AIanimator.SetBool("isWalk", false);
-                    
-                    break;
-                }
-            case 3:
-                {
-                    
-                    AIanimator.SetFloat("Speed", 25.0f);
-                    AIanimator.SetBool("isRun", true);
-                    this.transform.Translate(Vector3.forward * AIanimator.GetFloat("Speed") * Time.deltaTime);
-                    
-                    break;
-                }
+            switch (state)
+            {
+                case 1:
+                    {
+
+                        AIanimator.SetFloat("Speed", 15.0f);
+                        AIanimator.SetBool("isRun", false);
+                        AIanimator.SetBool("isWalk", true);
+                        this.transform.Translate(Vector3.forward * AIanimator.GetFloat("Speed") * Time.deltaTime);
+                        break;
+                    }
+                case 2:
+                    {
+                        AIanimator.SetBool("isRun", false);
+                        AIanimator.SetBool("isWalk", false);
+
+                        break;
+                    }
+                case 3:
+                    {
+
+                        AIanimator.SetFloat("Speed", 25.0f);
+                        AIanimator.SetBool("isRun", true);
+                        this.transform.Translate(Vector3.forward * AIanimator.GetFloat("Speed") * Time.deltaTime);
+
+                        break;
+                    }
+            }
+
+
         }
-
-        
-
+        else
+        {
+            AIanimator.SetBool("isWalk", false);
+            AIanimator.SetBool("isRun", false);
+            AIanimator.SetBool("isJump", false);
+            AIanimator.SetBool("isGrounded", true);
+        }
     }
     void RandomState()
     {
-        state = (int)Random.Range(1, 4);
-        Rotation();
-        
+        if(!isDie)
+        {
+            state = (int)Random.Range(1, 4);
+            Rotation();
+        }
+
     }
 
 
@@ -89,7 +102,6 @@ public class AIMove : MonoBehaviour
     {
         if (collision.gameObject.tag == "Ground")
         {
-            
             AIanimator.SetBool("isGrounded", true);
             AIanimator.SetBool("isJump", false);
         }

@@ -95,7 +95,7 @@ MonoBehaviour:
   m_MinSize: {x: 917, y: 348}
   m_MaxSize: {x: 22012, y: 10024}
   vertical: 0
-  controlID: 138
+  controlID: 161
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -141,7 +141,7 @@ MonoBehaviour:
   m_MinSize: {x: 202, y: 348}
   m_MaxSize: {x: 4002, y: 8048}
   vertical: 1
-  controlID: 51
+  controlID: 32
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -410,9 +410,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: fe310000
-      m_LastClickedID: 12798
-      m_ExpandedIDs: 7295ffff3a96ffffd896ffff1298ffff1498ffff729affff109bffff4e9cffff509cffff529cffffd6fbfffffe310000
+      m_SelectedIDs: 
+      m_LastClickedID: 0
+      m_ExpandedIDs: beb3ffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -515,14 +515,14 @@ MonoBehaviour:
   m_LastFolders:
   - Assets/02.Scripts
   m_LastFoldersGridSize: -1
-  m_LastProjectPath: C:\Users\SysLab\FindSolGae
+  m_LastProjectPath: D:\Git Unity\Capston\FindSolGae
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 5a0e0000
-    m_LastClickedID: 3674
-    m_ExpandedIDs: 000000000e0a0000320a0000060e00005a0e00007a0e0000fa2c0000fc2c000000ca9a3b
+    m_SelectedIDs: 4a560000
+    m_LastClickedID: 22090
+    m_ExpandedIDs: 00000000ba520000da52000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -550,7 +550,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000000e0a0000320a00005a0e00007a0e0000fa2c0000fc2c0000
+    m_ExpandedIDs: 
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -577,7 +577,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 1
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: 389dfefffc41000096300000d20b000000000000fc0c0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -748,7 +748,7 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: -0.10291788, y: -0.84351766, z: 0.49742004, w: -0.17452571}
     speed: 2
-    m_Value: {x: -0.10291788, y: -0.84351766, z: 0.49742004, w: -0.17452571}
+    m_Value: {x: 0.10291788, y: 0.8435176, z: -0.49742, w: 0.17452571}
   m_Size:
     m_Target: 5.615653
     speed: 2

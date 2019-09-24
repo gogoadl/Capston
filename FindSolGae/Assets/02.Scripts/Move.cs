@@ -30,6 +30,7 @@ public class Move : MonoBehaviour
     public float yMinLimit = 0f;  // -20
     public float yMaxLimit = 0f;  // 80
 
+   
 
 
     float clampAngle(float angle, float min, float max)
@@ -48,7 +49,7 @@ public class Move : MonoBehaviour
 
     private void Start() // 초기화 함수
     {
-
+        
         Physics.gravity = new Vector3(0, -15.5f, 0); // 중력가속도를 16.5로 적용
 
         rigidbody = GetComponent<Rigidbody>();
@@ -121,7 +122,7 @@ public class Move : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                if (jumpCount == 1)
+                if (jumpCount == 1)     // 점프가 중복되는 것을 방지하기 위해 점프 카운트를 둔다
                     animator.SetBool("isJump", true);
                 animator.SetBool("isGrounded", false);
                 jumpCount = 0;
@@ -136,7 +137,7 @@ public class Move : MonoBehaviour
             {
                 animator.SetBool("isWalk", false);
                 animator.SetBool("isRun", true);
-                animator.SetFloat("Speed", 25.0f);
+                animator.SetFloat("Speed", 35.0f);
                 this.transform.Translate(Vector3.forward * animator.GetFloat("Speed") * Time.deltaTime);
             }
             else
@@ -179,21 +180,33 @@ public class Move : MonoBehaviour
             animator.SetBool("isJump", false);
         }
 
-        if (collision.gameObject.tag == "Player")
-        {
-            Debug.Log(collision.collider);
-        }
+        //if (collision.gameObject.tag == "Player")
+        //{
+        //    Debug.Log(collision.collider);
+        //    Animator AIAnimator = collision.collider.GetComponent<Animator>();
+        //    AIMove aimove = collision.collider.GetComponent<AIMove>();
+        //    aimove.isDie = true;
+        //    AIAnimator.SetBool("isDie", true);
+        //}
+                // 플레이어 죽음 스크립트는 플레이어 캐릭터 
     }
 
     void Attack()
     {
-        if(Input.GetMouseButton(0))
-        {
-            animator.SetBool("isAttack", true);
-        }
-        else
-        {
-            animator.SetBool("isAttack", false);
+        GameObject child = GameObject.FindWithTag("PlayerAttack"); 
+        Collider c = child.GetComponent<BoxCollider>(); // 주먹에 있는 Box Collider 를 Get 함
+        if(!animator.GetBool("isRun"))
+        { 
+            if (Input.GetMouseButton(0))
+            {
+                animator.SetBool("isAttack", true);
+                c.enabled = true; // 공격 했을 때 Collider의 상태를 true로 바꿈(충돌 처리가 되도록)
+            }
+            else
+            {   
+                animator.SetBool("isAttack", false);
+                c.enabled = false;
+            }
         }
     }
 }
