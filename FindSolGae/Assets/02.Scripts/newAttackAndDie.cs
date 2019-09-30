@@ -17,14 +17,14 @@ public class newAttackAndDie : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Player")
-        {
-            Debug.Log(other);
-            Animator AIAnimator = other.GetComponent<Animator>();
-            AIMove aimove = other.GetComponent<AIMove>();
-            aimove.isDie = true;
-            AIAnimator.SetBool("isDie", true);
-        }
+        //if (other.gameObject.tag == "Player")
+        //{
+        //    //Debug.Log(other);
+        //    Animator AIAnimator = other.GetComponent<Animator>();
+        //    AIMove aimove = other.GetComponent<AIMove>();
+        //    aimove.isDie = true;
+        //    AIAnimator.SetBool("isDie", true);
+        //}
     }
     private void OnCollisionEnter(Collision collision)
     {
