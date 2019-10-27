@@ -2,256 +2,146 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-
-public class Player : MonoBehaviourPun
+namespace Solgae.FindSolgae
 {
-    [SerializeField] // Inspector 창에서 보이게 함
-    Camera CharacterCamera; // 카메라 객체 선언
-   
-    public Transform target; // 오브젝트의 위치정보를 저장하는 객체 선언
-   
-
-    public Animator animator; // 애니메이터 객체 선언
-
-    public Vector3 lookDirection; // x,y,z 좌표를 가지는 객체 선언
-
-    public Rigidbody rigidbody; // 오브젝트의 물리엔진 정보를 가지는 객체 선언
-
-    int jumpCount; // 공중에서 연속해서 점프를 할 수 없도록 점프카운트 사용
-
-    bool isGround; // 현재 플레이어의 위치가 바닥에 닿아 있는지 확인
-    
-    public float dist = 5f; // 카메라와 오브젝트 사이의 거리
-
-    public float xSpeed = 220.0f; // 카메라가 x축으로 이동하는 속도
-    public float ySpeed = 100.0f; // 카메라가 y축으로 이동하는 속도
-
-    private float x = 0.0f;
-    private float y = 0.0f;
-
-    public float yMinLimit = 0f;  // -20
-    public float yMaxLimit = 0f;  // 80
-
-
-
-    public static void RefreshInstance(ref Player player, Player Prefab)
+    public class Player : MonoBehaviourPun
     {
-        var position = Vector3.zero;
-        var rotation = Quaternion.identity;
-        if (player != null)
+        public Transform target; // 오브젝트의 위치정보를 저장하는 객체 선언
+
+        public Animator animator; // 애니메이터 객체 선언
+
+        public Vector3 lookDirection; // x,y,z 좌표를 가지는 객체 선언
+
+        public Rigidbody rigidbody;
+
+        private int jumpCount = 0;
+
+        private void Start() // 초기화 함수
         {
-            position = player.transform.position;
-            rotation = player.transform.rotation;
-            PhotonNetwork.Destroy(player.gameObject);
-        }
-        else
-        { 
-            player = PhotonNetwork.Instantiate("Player", position, rotation).GetComponent<Player>();
-        }
-    }
-
-    //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    //{
-    //    if (stream.IsWriting)
-    //    {
-    //        stream.SendNext(Input.GetKey(KeyCode.W));
-    //        stream.SendNext(Input.GetKey(KeyCode.A));
-    //        stream.SendNext(Input.GetKey(KeyCode.S));
-    //        stream.SendNext(Input.GetKey(KeyCode.D));
-    //    }
-    //    else
-    //    {
-    //        Input.RunX = (float)stream.ReceiveNext();
-    //        Input.RunZ = (float)stream.ReceiveNext();
-    //        Input.LookX = (float)stream.ReceiveNext();
-    //        Input.LookZ = (float)stream.ReceiveNext();
-    //    }
-    //}
-
-
-    private void Awake()
-    {
-        if (!photonView.IsMine && GetComponent<Player>() != null)
-            Destroy(GetComponent<Player>());
-    }
-
-    
-
-    private void Start() // 초기화 함수
-    {
-        
-        Physics.gravity = new Vector3(0, -15.5f, 0); // 중력가속도를 15.5로 적용
-
-        rigidbody = GetComponent<Rigidbody>();
-
-        animator = GetComponent<Animator>();
-        
-        jumpCount = 1;
-
-        isGround = true;
-
-        Vector3 angles = CharacterCamera.transform.eulerAngles;
-        x = angles.y;
-        y = angles.x;
-
-        animator.SetBool("isWalk", false);
-        animator.SetBool("isRun", false);
-        animator.SetBool("isJump", false);
-        animator.SetBool("isGrounded", true);
-        animator.SetBool("isAttack", false);
-        animator.SetBool("isDie", false);
-    }
-
-    private void LateUpdate()
-    {
-        if(target)
-        {
-            if(Input.GetKey(KeyCode.LeftAlt))
-            {
-
             
-            dist -= 5f * Input.mouseScrollDelta.y;
+            Physics.gravity = new Vector3(0, -15.5f, 0); // 중력가속도를 15.5로 적용
 
-            if(dist < 0.5)
+            animator = GetComponent<Animator>(); // 애니메이터 컴포넌트를 가져온다
+                                                 // (애니메이터에 있는 변수들을 사용하기 위해) ex) isWalk = true 등등
+            InitAnimatorVariable(); // 애니메이터 변수 초기화
+
+            if (photonView.IsMine) // 플레이어가 내 것 일경우 
             {
-                dist = 1;
+                Camera.main.gameObject.AddComponent<PlayerCamera>(); 
+                PlayerCamera p = Camera.main.GetComponent<PlayerCamera>();
+                //p.playerTransform = this.target;
+                //Destroy(CharacterCamera);
             }
-            if(dist >= 100)
-            {
-                dist = 100;
-            }
-
-            x += Input.GetAxis("Mouse X") * xSpeed * 0.02f;
-            y -= Input.GetAxis("Mouse Y") * ySpeed * 0.02f;
-
-            y = clampAngle(y, yMinLimit, yMaxLimit);  // 카메라 앵글이 적정하도록 조정
-                
-
-            Quaternion rotation = Quaternion.Euler(y, x, 0);
-
-            
-            Vector3 position = rotation * new Vector3(0, 0.0f, -dist) + target.position + new Vector3(0.0f, 10f, 0.0f);
-
-            CharacterCamera.transform.rotation = rotation;
-            CharacterCamera.transform.position = position;
-            }
+           
         }
-    }
 
-    void Update()
-    {
-        Rotation();
-        Attack();
-        if(photonView.IsMine)
-        { 
-        if(animator.GetBool("isJump"))
+        void Update()
         {
-            animator.SetBool("isAttack", false);
-        }
-        
-        if (animator.GetBool("isGrounded"))
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                if (jumpCount == 1)     // 점프가 중복되는 것을 방지하기 위해 점프 카운트를 둔다
-                    animator.SetBool("isJump", true);
-                animator.SetBool("isGrounded", false);
-                jumpCount = 0;
-                rigidbody.AddForce(Vector3.up * 6.5f, ForceMode.Impulse);
-
+           
+            if (photonView.IsMine == false && PhotonNetwork.IsConnected == true)
+            {   // 포톤뷰가 내 것이 아닐경우 
+                return;
             }
-        }
-        
-        if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
-        {
-            if (Input.GetKey(KeyCode.LeftShift))
+
+            Rotation();
+            Attack();
+
+            if (animator.GetBool("isJump")) // 점프 중일때 공격 불가능 하게 함
+            {                               // (점프공격 애니메이션이 없음..)
+                animator.SetBool("isAttack", false);
+            }
+
+            if (animator.GetBool("isGrounded")) // 플레이어 인스턴스가 바닥에 닿아 있으면 점프 가능
             {
-                animator.SetBool("isWalk", false);
-                animator.SetBool("isRun", true);
-                animator.SetFloat("Speed", 35.0f);
-                this.transform.Translate(Vector3.forward * animator.GetFloat("Speed") * Time.deltaTime);
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    if (jumpCount == 1)     // 점프가 중복되는 것을 방지하기 위해 점프 카운트를 둔다
+                        animator.SetBool("isJump", true);
+                    animator.SetBool("isGrounded", false);
+                    jumpCount = 0;
+                    rigidbody.AddForce(Vector3.up * 6.5f, ForceMode.Impulse); // Impulse 방식으로 위쪽을 향해 힘을 가해준다.
+
+                }
+            }
+
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+            {   // 플레이어 이동 부분
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    animator.SetBool("isWalk", false);
+                    animator.SetBool("isRun", true);
+                    animator.SetFloat("Speed", 35.0f);
+                    this.transform.Translate(Vector3.forward * animator.GetFloat("Speed") * Time.deltaTime);
+                }
+                else
+                {
+                    animator.SetFloat("Speed", 15.0f);
+                    animator.SetBool("isRun", false);
+                    animator.SetBool("isWalk", true);
+                    this.transform.Translate(Vector3.forward * animator.GetFloat("Speed") * Time.deltaTime);
+                }
+
             }
             else
             {
-                animator.SetFloat("Speed", 15.0f);
+                animator.SetBool("isWalk", false);
                 animator.SetBool("isRun", false);
-                animator.SetBool("isWalk", true);
-                this.transform.Translate(Vector3.forward * animator.GetFloat("Speed") * Time.deltaTime);
             }
-            
+
         }
-        else
+
+        private void OnCollisionStay(Collision collision)
+        {
+            if (collision.gameObject.tag == "Ground")
+            {
+                jumpCount = 1;
+                animator.SetBool("isGrounded", true);
+                animator.SetBool("isJump", false);
+            }
+        }
+
+
+        void Rotation() // 플레이어 인스턴스의 방향을 설정
+        {
+            float getX = Input.GetAxis("Horizontal");
+            float getY = Input.GetAxis("Vertical");
+
+            lookDirection.Set(getX, 0, getY);   
+
+            if (lookDirection != Vector3.zero)
+            {
+                Quaternion q = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(lookDirection), 7 * Time.deltaTime);
+                transform.rotation = q;
+            }
+        }
+        
+        void Attack()
+        {
+            GameObject child = GameObject.FindWithTag("PlayerAttack");
+            Collider c = child.GetComponent<BoxCollider>(); // 주먹에 있는 Box Collider 를 Get 함
+            if (!animator.GetBool("isRun"))
+            {
+                if (Input.GetMouseButton(0))
+                {
+                    animator.SetBool("isAttack", true);
+                    c.enabled = true; // 공격 했을 때 Collider의 상태를 true로 바꿈(충돌 처리가 되도록)
+                }
+                else
+                {
+                    animator.SetBool("isAttack", false);
+                    c.enabled = false;
+                }
+            }
+        }
+
+        void InitAnimatorVariable()
         {
             animator.SetBool("isWalk", false);
             animator.SetBool("isRun", false);
-        }
-        }
-
-    }
-    void Rotation()
-    {
-        // 마우스를 이용해 조종
-        float getX = Input.GetAxis("Horizontal");
-        float getY = Input.GetAxis("Vertical");
-
-
-        lookDirection.Set(getX, 0, getY);   // 벡터 셋팅.
-
-        if (lookDirection != Vector3.zero)
-        {
-            Quaternion q = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(lookDirection), 7 * Time.deltaTime);
-            transform.rotation = q;
-        }
-    }
-    private void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.tag == "Ground")
-        {
-            jumpCount = 1;
-            animator.SetBool("isGrounded", true);
             animator.SetBool("isJump", false);
+            animator.SetBool("isGrounded", true);
+            animator.SetBool("isAttack", false);
+            animator.SetBool("isDie", false);
         }
-
-        //if (collision.gameObject.tag == "Player")
-        //{
-        //    Debug.Log(collision.collider);
-        //    Animator AIAnimator = collision.collider.GetComponent<Animator>();
-        //    AIMove aimove = collision.collider.GetComponent<AIMove>();
-        //    aimove.isDie = true;
-        //    AIAnimator.SetBool("isDie", true);
-        //}
-                // 플레이어 죽음 스크립트는 플레이어 캐릭터 
-    }
-
-    void Attack()
-    {
-        GameObject child = GameObject.FindWithTag("PlayerAttack"); 
-        Collider c = child.GetComponent<BoxCollider>(); // 주먹에 있는 Box Collider 를 Get 함
-        if(!animator.GetBool("isRun"))
-        { 
-            if (Input.GetMouseButton(0))
-            {
-                animator.SetBool("isAttack", true);
-                c.enabled = true; // 공격 했을 때 Collider의 상태를 true로 바꿈(충돌 처리가 되도록)
-            }
-            else
-            {   
-                animator.SetBool("isAttack", false);
-                c.enabled = false;
-            }
-        }
-    }
-    float clampAngle(float angle, float min, float max)
-    {
-        if (angle < -360)
-        {
-            angle += 360;
-        }
-
-        if (angle > 360)
-        {
-            angle -= 360;
-        }
-        return Mathf.Clamp(angle, min, max);  // Angle 의 최소값과 최대값을 리턴
     }
 }

@@ -4,33 +4,39 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
-
-public class NetworkManager : MonoBehaviourPunCallbacks
+namespace Solgae.FindSolgae
 {
-    [SerializeField]
-    public Player PlayerPrefabs;
-
-    public Player LocalPlayer;
-
-    void Awake()
+    public class NetworkManager : MonoBehaviourPunCallbacks // 싱글톤 패턴으로 하나의 네트워크 매니저를 가지도록 함
     {
-        if(!PhotonNetwork.IsConnected)
+        public static NetworkManager instance
         {
-            SceneManager.LoadScene("Menu Scene");
-            return;
+            get
+            {
+                if (m_instance == null)
+                {
+                    m_instance = FindObjectOfType<NetworkManager>();
+                }
+                return m_instance;
+            }
         }
-    }
+        private static NetworkManager m_instance;
+
+        public GameObject playerPrefab;
 
 
-    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
-    {
-        base.OnPlayerEnteredRoom(newPlayer);
-        Player.RefreshInstance(ref LocalPlayer, PlayerPrefabs);
-
-    }
-    public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
-    {
-        base.OnPlayerLeftRoom(otherPlayer);
-        Player.RefreshInstance(ref LocalPlayer, PlayerPrefabs);
+        private void Awake()
+        {
+            if (instance != this)
+            {
+                Destroy(gameObject);
+                Debug.Log("destroy singleton Object");
+            }
+        }
+        private void Start() // 
+        {
+            
+            PhotonNetwork.Instantiate("player", Vector3.zero, Quaternion.identity);
+            Debug.Log("Instantiate Player");
+        }
     }
 }
