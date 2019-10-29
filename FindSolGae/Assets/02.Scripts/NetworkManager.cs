@@ -23,20 +23,23 @@ namespace Solgae.FindSolgae
 
         public GameObject playerPrefab;
 
-
+       
         private void Awake()
         {
+            Debug.Log("싱글톤 생성");
             if (instance != this)
             {
                 Destroy(gameObject);
-                Debug.Log("destroy singleton Object");
+                Debug.Log("싱글톤 파괴");
             }
         }
-        private void Start() // 
+        private void Start() 
         {
             
             PhotonNetwork.Instantiate("player", Vector3.zero, Quaternion.identity);
-            Debug.Log("Instantiate Player");
+            Debug.Log("플레이어 인스턴스 생성");
         }
+
+        
     }
 }

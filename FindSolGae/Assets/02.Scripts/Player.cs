@@ -27,9 +27,10 @@ namespace Solgae.FindSolgae
 
             if (photonView.IsMine) // 플레이어가 내 것 일경우 
             {
+                
                 Camera.main.gameObject.AddComponent<PlayerCamera>(); 
                 PlayerCamera p = Camera.main.GetComponent<PlayerCamera>();
-                //p.playerTransform = this.target;
+                p.target = this.target;
                 //Destroy(CharacterCamera);
             }
            
@@ -38,7 +39,7 @@ namespace Solgae.FindSolgae
         void Update()
         {
            
-            if (photonView.IsMine == false && PhotonNetwork.IsConnected == true)
+            if (photonView.IsMine == false)
             {   // 포톤뷰가 내 것이 아닐경우 
                 return;
             }
@@ -92,6 +93,8 @@ namespace Solgae.FindSolgae
 
         private void OnCollisionStay(Collision collision)
         {
+            BoxCollider footCollider = GameObject.FindGameObjectWithTag("PlayerFoot").GetComponent<BoxCollider>();
+            
             if (collision.gameObject.tag == "Ground")
             {
                 jumpCount = 1;
@@ -118,20 +121,25 @@ namespace Solgae.FindSolgae
         void Attack()
         {
             GameObject child = GameObject.FindWithTag("PlayerAttack");
-            Collider c = child.GetComponent<BoxCollider>(); // 주먹에 있는 Box Collider 를 Get 함
-            if (!animator.GetBool("isRun"))
-            {
-                if (Input.GetMouseButton(0))
+            if(child.GetComponent<BoxCollider>())
+            { 
+            BoxCollider c = child.GetComponent<BoxCollider>(); // 주먹에 있는 Box Collider 를 Get 함
+
+                if (!animator.GetBool("isRun"))
                 {
-                    animator.SetBool("isAttack", true);
-                    c.enabled = true; // 공격 했을 때 Collider의 상태를 true로 바꿈(충돌 처리가 되도록)
-                }
-                else
-                {
-                    animator.SetBool("isAttack", false);
-                    c.enabled = false;
+                    if (Input.GetMouseButton(0))
+                    {
+                        animator.SetBool("isAttack", true);
+                        c.enabled = true; // 공격 했을 때 Collider의 상태를 true로 바꿈(충돌 처리가 되도록)
+                    }
+                    else
+                    {
+                        animator.SetBool("isAttack", false);
+                        c.enabled = false;
+                    }
                 }
             }
+            
         }
 
         void InitAnimatorVariable()

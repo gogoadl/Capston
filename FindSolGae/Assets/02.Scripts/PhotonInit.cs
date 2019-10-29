@@ -26,8 +26,9 @@ namespace Solgae.FindSolgae
 
         void Start()
         {
-            Debug.Log("Start PhotonInit");
-            DontDestroyOnLoad(this); // 씬이 바뀌어도 해당 게임오브젝트는 파괴되지 않고 남긴다.
+            
+            //DontDestroyOnLoad(this); // 씬이 바뀌어도 해당 게임오브젝트는 파괴되지 않고 남긴다. 
+            //DontDestroyOnLoad를 주석처리 해도 PhotonMono라는 오브젝트가 자동으로 DontDestroyOnLoad에 생성되어 있었음
             TriesToConnectToMaster = false;
             TriesToConnectToRoom = false;
 
@@ -90,6 +91,16 @@ namespace Solgae.FindSolgae
                                                    //SceneManager.LoadScene("Main Scene");
 
             Debug.Log("메인씬으로 이동");
+        }
+        public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
+        {
+            base.OnPlayerLeftRoom(otherPlayer);
+            Debug.Log(otherPlayer.NickName + "님이 나갔습니다.");
+        }
+        public override void OnLeftRoom()
+        {
+            base.OnLeftRoom();
+            Debug.Log("누가 방을 나갔습니다.");
         }
 
         public override void OnMasterClientSwitched(Photon.Realtime.Player newMasterClient) 
