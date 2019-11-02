@@ -19,7 +19,7 @@ namespace Solgae.FindSolgae
         private void Start() // 초기화 함수
         {
             
-            Physics.gravity = new Vector3(0, -15.5f, 0); // 중력가속도를 15.5로 적용
+            //Physics.gravity = new Vector3(0, -15.5f, 0); // 중력가속도를 15.5로 적용
 
             animator = GetComponent<Animator>(); // 애니메이터 컴포넌트를 가져온다
                                                  // (애니메이터에 있는 변수들을 사용하기 위해) ex) isWalk = true 등등
@@ -52,19 +52,6 @@ namespace Solgae.FindSolgae
                 animator.SetBool("isAttack", false);
             }
 
-            if (animator.GetBool("isGrounded")) // 플레이어 인스턴스가 바닥에 닿아 있으면 점프 가능
-            {
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    if (jumpCount == 1)     // 점프가 중복되는 것을 방지하기 위해 점프 카운트를 둔다
-                        animator.SetBool("isJump", true);
-                    animator.SetBool("isGrounded", false);
-                    jumpCount = 0;
-                    rigidbody.AddForce(Vector3.up * 6.5f, ForceMode.Impulse); // Impulse 방식으로 위쪽을 향해 힘을 가해준다.
-
-                }
-            }
-
             if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
             {   // 플레이어 이동 부분
                 if (Input.GetKey(KeyCode.LeftShift))
@@ -89,18 +76,6 @@ namespace Solgae.FindSolgae
                 animator.SetBool("isRun", false);
             }
 
-        }
-
-        private void OnCollisionStay(Collision collision)
-        {
-            BoxCollider footCollider = GameObject.FindGameObjectWithTag("PlayerFoot").GetComponent<BoxCollider>();
-            
-            if (collision.gameObject.tag == "Ground")
-            {
-                jumpCount = 1;
-                animator.SetBool("isGrounded", true);
-                animator.SetBool("isJump", false);
-            }
         }
 
 

@@ -14,7 +14,7 @@ namespace Solgae.FindSolgae
         Quaternion rotation;
         //카메라와의 거리
 
-        public float dist = 30f;
+        public float dist = 50f;
 
         //카메라 회전 속도
 
@@ -65,14 +65,18 @@ namespace Solgae.FindSolgae
                 y = ClampAngle(y, yMinLimit, yMaxLimit);
 
                 //카메라 위치 변화 계산
-                if (Input.GetAxis("Mouse ScrollWheel") < 0)
-                {
-                    dist += 10;
-                }
-                if (Input.GetAxis("Mouse ScrollWheel") > 0)
-                {
-                    dist -= 10;
-                }
+                
+                    if (Input.GetAxis("Mouse ScrollWheel") < 0)
+                    {
+                        dist += 10;
+
+                    }
+                    if (Input.GetAxis("Mouse ScrollWheel") > 0 && dist >= 50)
+                    {
+                        dist -= 10;
+
+                    }
+                
             }
             rotation = Quaternion.Euler(y, x, 0);
             position = rotation * new Vector3(0, 10f, -dist) + target.position + new Vector3(0.0f, 0, 0.0f);

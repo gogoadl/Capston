@@ -36,7 +36,7 @@ namespace Solgae.FindSolgae
         private void Start() 
         {
             
-            PhotonNetwork.Instantiate("player", Vector3.zero, Quaternion.identity);
+            PhotonNetwork.Instantiate("player", new Vector3(0,5,0), Quaternion.identity);
             Debug.Log("플레이어 인스턴스 생성");
         }
 
