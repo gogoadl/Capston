@@ -116,6 +116,18 @@ namespace Solgae.FindSolgae
             }
             
         }
+    
+        private void OnTriggerEnter(Collider other)
+        {
+            
+            if (other.gameObject.tag == "PlayerAttack")
+            {
+                
+                animator.SetBool("isDie", true);
+
+               
+            }
+        }
 
         void InitAnimatorVariable()
         {

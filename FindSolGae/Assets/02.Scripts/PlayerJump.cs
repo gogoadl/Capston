@@ -57,16 +57,7 @@ public class PlayerJump : MonoBehaviourPunCallbacks
             }
         }
     }
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.tag == "Ground")
-        {
-            Debug.Log("바닥과 닿아있음");
-            jumpCount = 1;
-            animator.SetBool("isGrounded", true);
-            animator.SetBool("isJump", false);
-        }
-    }
+   
 
 
 }
