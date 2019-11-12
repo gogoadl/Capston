@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+
 namespace Solgae.FindSolgae
 {
     public class Player : MonoBehaviourPun
     {
+
         public Transform target; // 오브젝트의 위치정보를 저장하는 객체 선언
 
         public Animator animator; // 애니메이터 객체 선언
@@ -16,10 +18,9 @@ namespace Solgae.FindSolgae
 
         private int jumpCount = 0;
 
+
         private void Start() // 초기화 함수
         {
-            
-            //Physics.gravity = new Vector3(0, -15.5f, 0); // 중력가속도를 15.5로 적용
 
             animator = GetComponent<Animator>(); // 애니메이터 컴포넌트를 가져온다
                                                  // (애니메이터에 있는 변수들을 사용하기 위해) ex) isWalk = true 등등
@@ -36,6 +37,20 @@ namespace Solgae.FindSolgae
            
         }
 
+        void Attack()
+        {
+            //if (Input.GetMouseButton(0))
+            //{
+            //    animator.SetBool("isAttack", true);
+                
+            //}
+            //else
+            //{
+            //    animator.SetBool("isAttack", false);
+                
+            //}
+        }
+
         void Update()
         {
            
@@ -47,23 +62,18 @@ namespace Solgae.FindSolgae
             Rotation();
             Attack();
 
-            if (animator.GetBool("isJump")) // 점프 중일때 공격 불가능 하게 함
-            {                               // (점프공격 애니메이션이 없음..)
-                animator.SetBool("isAttack", false);
-            }
-
             if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
             {   // 플레이어 이동 부분
                 if (Input.GetKey(KeyCode.LeftShift))
                 {
                     animator.SetBool("isWalk", false);
                     animator.SetBool("isRun", true);
-                    animator.SetFloat("Speed", 35.0f);
+                    animator.SetFloat("Speed", 25.0f);
                     this.transform.Translate(Vector3.forward * animator.GetFloat("Speed") * Time.deltaTime);
                 }
                 else
                 {
-                    animator.SetFloat("Speed", 15.0f);
+                    animator.SetFloat("Speed", 10.0f);
                     animator.SetBool("isRun", false);
                     animator.SetBool("isWalk", true);
                     this.transform.Translate(Vector3.forward * animator.GetFloat("Speed") * Time.deltaTime);
@@ -78,7 +88,6 @@ namespace Solgae.FindSolgae
 
         }
 
-
         void Rotation() // 플레이어 인스턴스의 방향을 설정
         {
             float getX = Input.GetAxis("Horizontal");
@@ -88,47 +97,11 @@ namespace Solgae.FindSolgae
 
             if (lookDirection != Vector3.zero)
             {
-                Quaternion q = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(lookDirection), 7 * Time.deltaTime);
+                Quaternion q = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(lookDirection), 15f * Time.deltaTime);
                 transform.rotation = q;
             }
         }
-        
-        void Attack()
-        {
-            GameObject child = GameObject.FindWithTag("PlayerAttack");
-            if(child.GetComponent<BoxCollider>())
-            { 
-            BoxCollider c = child.GetComponent<BoxCollider>(); // 주먹에 있는 Box Collider 를 Get 함
-
-                if (!animator.GetBool("isRun"))
-                {
-                    if (Input.GetMouseButton(0))
-                    {
-                        animator.SetBool("isAttack", true);
-                        c.enabled = true; // 공격 했을 때 Collider의 상태를 true로 바꿈(충돌 처리가 되도록)
-                    }
-                    else
-                    {
-                        animator.SetBool("isAttack", false);
-                        c.enabled = false;
-                    }
-                }
-            }
-            
-        }
     
-        private void OnTriggerEnter(Collider other)
-        {
-            
-            if (other.gameObject.tag == "PlayerAttack")
-            {
-                
-                animator.SetBool("isDie", true);
-
-               
-            }
-        }
-
         void InitAnimatorVariable()
         {
             animator.SetBool("isWalk", false);

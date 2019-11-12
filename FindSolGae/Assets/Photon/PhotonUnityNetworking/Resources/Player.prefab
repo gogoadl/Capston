@@ -6116,6 +6116,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8546660704171395772}
   - component: {fileID: 8546660704171395778}
+  - component: {fileID: 3341031254083461710}
   m_Layer: 0
   m_Name: rIndex1CG
   m_TagString: PlayerAttack
@@ -6147,10 +6148,25 @@ BoxCollider:
   m_GameObject: {fileID: 8546660704171395775}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.3, y: 0.3, z: 0.3}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3341031254083461710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8546660704171395775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f60cd65f48b111f4fbc46cba9012c268, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  boxCollider: {fileID: 0}
+  pv: {fileID: 0}
 --- !u!1 &8546660704174410142
 GameObject:
   m_ObjectHideFlags: 0
@@ -8517,7 +8533,6 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 8546660704812380975}
   - {fileID: 8546660704812380968}
-  - {fileID: 8546660704812380969}
   - {fileID: 8546660704812380969}
   viewIdField: 0
   InstantiationId: 0
