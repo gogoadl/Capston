@@ -5621,7 +5621,6 @@ GameObject:
   - component: {fileID: 3312182764932435993}
   - component: {fileID: 8157781676557861961}
   - component: {fileID: 2191656516117651697}
-  - component: {fileID: 1418693462291920476}
   m_Layer: 0
   m_Name: Solgae
   m_TagString: Player
@@ -5735,7 +5734,6 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 8157781676557861961}
   - {fileID: 2191656516117651697}
-  - {fileID: 1418693462291920476}
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -5773,13 +5771,13 @@ MonoBehaviour:
     SynchronizeType: 0
     Name: isGrounded
   - Type: 1
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: Speed
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: isWalk
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: isRun
   - Type: 4
     SynchronizeType: 0
@@ -5788,27 +5786,11 @@ MonoBehaviour:
     SynchronizeType: 0
     Name: isAttack
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: isDie
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
---- !u!114 &1418693462291920476
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5873900697255246642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizeVelocity: 1
-  m_SynchronizeAngularVelocity: 0
-  m_TeleportEnabled: 0
-  m_TeleportIfDistanceGreaterThan: 3
 --- !u!1 &5969070408239013590
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,6 +10,10 @@ public class Attack : MonoBehaviourPun
     public BoxCollider boxCollider;
 
     public PhotonView pv;
+
+    float timer = 0.0f;
+
+    float waitingTime = 0.6f;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,16 +29,22 @@ public class Attack : MonoBehaviourPun
     {
         if (!pv.IsMine)
             return;
+        
+        if(animator.GetBool("isDie") == false)
+        { 
 
-        if(Input.GetMouseButton(0))
-        {
-            animator.SetBool("isAttack", true);
-            boxCollider.enabled = true;
-        }
-        else
-        {
-            animator.SetBool("isAttack", false);
-            boxCollider.enabled = false;
+            if(Input.GetMouseButton(0) && timer < waitingTime)
+            {
+                timer += Time.deltaTime;
+                animator.SetBool("isAttack", true);
+                boxCollider.enabled = true;
+            }
+            else
+            {
+                timer = 0;
+                animator.SetBool("isAttack", false);
+                boxCollider.enabled = false;
+            }
         }
     }
 }

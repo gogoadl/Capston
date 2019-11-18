@@ -18,9 +18,17 @@ namespace Solgae.FindSolgae
 
         private int jumpCount = 0;
 
+        string playerList;
 
         private void Start() // 초기화 함수
         {
+
+            for(int i =0; i < PhotonNetwork.PlayerList.Length; i++)
+            {
+                playerList += PhotonNetwork.PlayerList[i] + " ";
+            }
+
+            Debug.Log(playerList);
 
             animator = GetComponent<Animator>(); // 애니메이터 컴포넌트를 가져온다
                                                  // (애니메이터에 있는 변수들을 사용하기 위해) ex) isWalk = true 등등
@@ -36,31 +44,21 @@ namespace Solgae.FindSolgae
             }
            
         }
-
-        void Attack()
-        {
-            //if (Input.GetMouseButton(0))
-            //{
-            //    animator.SetBool("isAttack", true);
-                
-            //}
-            //else
-            //{
-            //    animator.SetBool("isAttack", false);
-                
-            //}
-        }
-
+        
         void Update()
         {
-           
+            if(animator.GetBool("isDie") == true) // 죽으면 못움직임
+            {
+                return;
+            }
+
             if (photonView.IsMine == false)
             {   // 포톤뷰가 내 것이 아닐경우 
                 return;
             }
 
             Rotation();
-            Attack();
+            
 
             if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
             {   // 플레이어 이동 부분
@@ -110,6 +108,24 @@ namespace Solgae.FindSolgae
             animator.SetBool("isGrounded", true);
             animator.SetBool("isAttack", false);
             animator.SetBool("isDie", false);
+        }
+        private void OnTriggerEnter(Collider other)
+        {
+             
+            if (other.gameObject.tag == "PlayerAttack")
+            {
+                photonView.RPC("rpc", RpcTarget.All);
+
+            }
+            
+        }
+
+        [PunRPC]
+        void rpc()
+        {
+
+            InitAnimatorVariable();
+            animator.SetBool("isDie", true);
         }
     }
 }

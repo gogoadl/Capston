@@ -20,8 +20,13 @@ namespace Solgae.FindSolgae
 
         public static Text StateText; // 게임 네트워크 상태를 보여주는 텍스트
 
-    
-       
+        public InputField userNickName; // 플레이어의 닉네임을 텍스트로 받는다
+
+        public GameObject StartPanel; // 게임시작 했을 때 보여줄 화면
+
+        public GameObject LobbyPanel; // 로비로 입장했을 때 화면
+
+        public Text playerNickNameTxt;
 
         void Start()
         {
@@ -32,18 +37,25 @@ namespace Solgae.FindSolgae
             PhotonNetwork.ConnectUsingSettings(); // OnConnectToMaster 호출한다.
 
             btnStart.interactable = false;
+
         }
 
         public void OnClickStart()
         {
             btnStart.interactable = false;
 
+            PhotonNetwork.NickName = userNickName.text;
+
             // 마스터 서버에 접속중이라면
             if (PhotonNetwork.IsConnected)
             {
                 // 룸 접속 실행
                 StateText.text = "룸에 접속...";
-                PhotonNetwork.JoinRandomRoom();
+                //PhotonNetwork.JoinRandomRoom();
+
+                playerNickNameTxt.text = userNickName.text;
+                StartPanel.SetActive(false);
+                LobbyPanel.SetActive(true);
             }
             else
             {
@@ -52,6 +64,8 @@ namespace Solgae.FindSolgae
                 // 마스터 서버로의 재접속 시도
                 PhotonNetwork.ConnectUsingSettings();
             }
+
+            
         }
 
     

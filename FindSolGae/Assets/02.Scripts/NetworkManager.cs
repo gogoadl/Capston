@@ -24,7 +24,7 @@ namespace Solgae.FindSolgae
 
         public GameObject playerPrefab;
 
-       
+        
         private void Awake()
         {
             Debug.Log("싱글톤 생성");
@@ -36,19 +36,24 @@ namespace Solgae.FindSolgae
         }
         private void Start() 
         {
+            
 
             GameObject g = PhotonNetwork.Instantiate("player", new Vector3(0,5,0), Quaternion.identity);
+            
             
             if(PhotonNetwork.IsMasterClient == true)
             {
                 for(int i =0; i< 10; i++)
                 {
-
+                    
                     PhotonNetwork.InstantiateSceneObject("Solgae", new Vector3(Random.Range(-100, 100), 5, Random.Range(-100, 100)), Quaternion.identity);
+
+                    
                 }
             }
             Debug.Log("플레이어 인스턴스 생성");
 
         } 
+        
     }
 }

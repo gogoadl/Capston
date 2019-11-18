@@ -34,10 +34,8 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -111,13 +109,11 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11056}
     - Class: 114
-      Script: {instanceID: 11594}
-    - Class: 114
       Script: {instanceID: 11900}
     - Class: 114
       Script: {instanceID: 12278}
     - Class: 114
-      Script: {instanceID: 36594}
+      Script: {instanceID: 12386}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 124
@@ -242,13 +238,13 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12380}
     - Class: 114
-      Script: {instanceID: 12416}
+      Script: {instanceID: 12386}
     - Class: 114
-      Script: {instanceID: 12424}
+      Script: {instanceID: 12418}
     - Class: 114
-      Script: {instanceID: 12460}
+      Script: {instanceID: 12426}
     - Class: 114
-      Script: {instanceID: 36594}
+      Script: {instanceID: 12462}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -1698,6 +1694,12 @@ ScriptsOnlyBuild:
     className: StandaloneInputModule
   - hash:
       serializedVersion: 2
+      Hash: d3fc860073d94bb9142768669b5db35d
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Attack
+  - hash:
+      serializedVersion: 2
       Hash: aa88ae22474df55295327e4ee99e5a24
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
@@ -1770,7 +1772,7 @@ ScriptsOnlyBuild:
     className: CountOfRoomsProperty
   - hash:
       serializedVersion: 2
-      Hash: 4d0abb60f260b3a747b1310c173712ab
+      Hash: b2e0f76f4b668e269570aa156ea69fac
     assemblyName: Assembly-CSharp.dll
     namespaceName: Solgae.FindSolgae
     className: PhotonInit
@@ -1786,12 +1788,6 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
-  - hash:
-      serializedVersion: 2
-      Hash: d3fc860073d94bb9142768669b5db35d
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: Attack
   platform: 19
   scenePathNames:
   - Assets/01.Scenes/Menu Scene.unity

@@ -8532,8 +8532,8 @@ MonoBehaviour:
   OwnershipTransfer: 0
   ObservedComponents:
   - {fileID: 8546660704812380975}
-  - {fileID: 8546660704812380968}
   - {fileID: 8546660704812380969}
+  - {fileID: 8546660704812380968}
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -8559,13 +8559,13 @@ MonoBehaviour:
     SynchronizeType: 1
     Name: Speed
   - Type: 4
-    SynchronizeType: 1
+    SynchronizeType: 2
     Name: isWalk
   - Type: 4
-    SynchronizeType: 1
+    SynchronizeType: 2
     Name: isRun
   - Type: 4
-    SynchronizeType: 1
+    SynchronizeType: 0
     Name: isJump
   - Type: 4
     SynchronizeType: 1

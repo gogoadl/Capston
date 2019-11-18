@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Solgae.FindSolgae
 {
-    public class Solgae : MonoBehaviour
+    public class Solgae : MonoBehaviourPun
     {
 
         public Animator animator; // 애니메이터 객체 선언
@@ -12,6 +13,8 @@ namespace Solgae.FindSolgae
         public int MovementFlag = 0; // 플래그 값에 의해 이동시킴
 
         public Quaternion q; // 방향 쿼터니언
+
+        PhotonView pv;
 
         public float invokeRunTime = 1f;
 
@@ -25,11 +28,13 @@ namespace Solgae.FindSolgae
 
         void Start()
         {
+            pv = GetComponent<PhotonView>();
+
             animator = GetComponentInParent<Animator>();
             // 애니메이터 컴포넌트를 얻는다
             InitAnimatorVariable();
             // 애니메이터 변수 초기화
-            InvokeRepeating("RandomMovement", invokeRunTime, invokeWaitTime); 
+            InvokeRepeating("RandomMovement", invokeRunTime, invokeWaitTime);
             // RandomMovement 함수를 invokeWaitTime 초마다 invokeRunTime 초만큼 실행
         }
 
@@ -41,7 +46,7 @@ namespace Solgae.FindSolgae
 
             switch (MovementFlag) // 플래그 값에 의해 움직임이 변경됨
             {
-                
+
                 case 1: // 걷기
                     animator.SetBool("isWalk", true);
                     animator.SetBool("isRun", false);
@@ -59,7 +64,7 @@ namespace Solgae.FindSolgae
                 case 3: // 가만히 서있기
                     animator.SetBool("isWalk", false);
                     animator.SetBool("isRun", false);
-                    
+
                     break;
             }
 
@@ -104,12 +109,18 @@ namespace Solgae.FindSolgae
 
             if (other.gameObject.tag == "PlayerAttack")
             {
-                Debug.Log(other + "와 부딪힘");
-                InitAnimatorVariable();
-                animator.SetBool("isDie", true);
-                
+                pv.RPC("rpc", RpcTarget.All);
+
             }
         }
-    }
 
+        [PunRPC]
+        void rpc()
+        {
+
+            InitAnimatorVariable();
+            animator.SetBool("isDie", true);
+        }
+
+    }
 }
