@@ -48,6 +48,9 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.GraphicRaycaster
     - UnityEngine.UI.Image
     - UnityEngine.UI.InputField
+    - UnityEngine.UI.Mask
+    - UnityEngine.UI.ScrollRect
+    - UnityEngine.UI.Scrollbar
     - UnityEngine.UI.Shadow
     - UnityEngine.UI.Slider
     - UnityEngine.UI.Text
@@ -186,6 +189,8 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 9996}
     - Class: 114
+      Script: {instanceID: 10000}
+    - Class: 114
       Script: {instanceID: 10008}
     - Class: 114
       Script: {instanceID: 10038}
@@ -198,11 +203,15 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10478}
     - Class: 114
+      Script: {instanceID: 10480}
+    - Class: 114
       Script: {instanceID: 10524}
     - Class: 114
       Script: {instanceID: 10628}
     - Class: 114
       Script: {instanceID: 10710}
+    - Class: 114
+      Script: {instanceID: 10902}
     - Class: 114
       Script: {instanceID: 10970}
     - Class: 114
@@ -1772,7 +1781,7 @@ ScriptsOnlyBuild:
     className: CountOfRoomsProperty
   - hash:
       serializedVersion: 2
-      Hash: b2e0f76f4b668e269570aa156ea69fac
+      Hash: 3ebdfc9f96d1230459ff920df55a1a31
     assemblyName: Assembly-CSharp.dll
     namespaceName: Solgae.FindSolgae
     className: PhotonInit

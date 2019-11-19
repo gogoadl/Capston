@@ -18,44 +18,70 @@ namespace Solgae.FindSolgae
 
         public Button btnStart;
 
-        public static Text StateText; // 게임 네트워크 상태를 보여주는 텍스트
+        public Text StateText; // 게임 네트워크 상태를 보여주는 텍스트
+
+        public Text playerNickNameTxt;
+
+        public Text JoinedPlayerCountTxt;
 
         public InputField userNickName; // 플레이어의 닉네임을 텍스트로 받는다
+
+        public InputField RoomName;
 
         public GameObject StartPanel; // 게임시작 했을 때 보여줄 화면
 
         public GameObject LobbyPanel; // 로비로 입장했을 때 화면
 
-        public Text playerNickNameTxt;
+        public GameObject RoomListContent;
+
+        public Button ExitBtn;
+
+        RoomOptions roomOptions;
 
         void Start()
         {
             Screen.SetResolution(1280, 800, false); // 게임 화면의 크기를 지정한다. (width, height, fullscreenMode)
 
-            StateText = GameObject.FindGameObjectWithTag("StateText").GetComponent<Text>();
-
             PhotonNetwork.ConnectUsingSettings(); // OnConnectToMaster 호출한다.
 
             btnStart.interactable = false;
 
+            roomOptions = new RoomOptions();
+
+            roomOptions.MaxPlayers = 4;
+
+            StartPanel.SetActive(true);
+
+            LobbyPanel.SetActive(false);
+
+
+        }
+
+        private void Update()
+        {
+            if(PhotonNetwork.InLobby)
+            {
+                JoinedPlayerCountTxt.text = "접속한 인원 수 : " + PhotonNetwork.CountOfPlayers;
+
+
+            }
         }
 
         public void OnClickStart()
         {
             btnStart.interactable = false;
 
-            PhotonNetwork.NickName = userNickName.text;
+            PhotonNetwork.LocalPlayer.NickName = userNickName.text;
 
             // 마스터 서버에 접속중이라면
             if (PhotonNetwork.IsConnected)
             {
-                // 룸 접속 실행
-                StateText.text = "룸에 접속...";
+                // 로비 접속 실행
+                StateText.text = "로비에 접속 대기중...";
                 //PhotonNetwork.JoinRandomRoom();
-
+                PhotonNetwork.JoinLobby();
                 playerNickNameTxt.text = userNickName.text;
-                StartPanel.SetActive(false);
-                LobbyPanel.SetActive(true);
+                
             }
             else
             {
@@ -67,13 +93,39 @@ namespace Solgae.FindSolgae
 
             
         }
+        public void OnClickExitBtn()
+        {
+            PhotonNetwork.Disconnect();
+            StateText.text = "Disconnected";
+            StartPanel.SetActive(true);
+            LobbyPanel.SetActive(false);
+        }
 
-    
+        public void OnClickCreateRoomBtn()
+        {
+            
+            if(RoomName.text != "") 
+                PhotonNetwork.CreateRoom(RoomName.text, roomOptions);
+            else
+                PhotonNetwork.CreateRoom("Room" + Random.Range(1,1000), roomOptions);
 
+        }
+        public override void OnJoinedLobby()
+        {
+            base.OnJoinedLobby();
+
+            StartPanel.SetActive(false);
+            LobbyPanel.SetActive(true);
+        }
+        
         public override void OnDisconnected(DisconnectCause cause)
         {
             base.OnDisconnected(cause);
             Debug.Log(cause);
+            // 마스터 서버에 접속중이 아니라면, 마스터 서버에 접속 시도
+            StateText.text = "오프라인 : 마스터 서버와 연결되지 않음\n접속 재시도 중...";
+            // 마스터 서버로의 재접속 시도
+            PhotonNetwork.ConnectUsingSettings();
         }
 
         public override void OnConnectedToMaster()
