@@ -67,6 +67,8 @@ namespace Solgae.FindSolgae
             }
         }
 
+
+
         public void OnClickStart()
         {
             btnStart.interactable = false;
@@ -93,6 +95,12 @@ namespace Solgae.FindSolgae
 
             
         }
+
+        public void OnClickJoinRandomRoom()
+        {
+            PhotonNetwork.JoinRandomRoom();
+        }
+
         public void OnClickExitBtn()
         {
             PhotonNetwork.Disconnect();
@@ -147,7 +155,6 @@ namespace Solgae.FindSolgae
             PhotonNetwork.LoadLevel("Main Scene"); // Scene Manager 를 통해 불러 올 경우 같은 씬을 로드하지 않음. 
                                                    // (플레이어가 입장해도 보여지지 않음)
                                                    //SceneManager.LoadScene("Main Scene");
-
             Debug.Log("메인씬으로 이동");
         }
 

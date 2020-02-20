@@ -45,6 +45,7 @@ ScriptsOnlyBuild:
     - UnityEngine.EventSystems.StandaloneInputModule
     - UnityEngine.UI.Button
     - UnityEngine.UI.CanvasScaler
+    - UnityEngine.UI.ContentSizeFitter
     - UnityEngine.UI.GraphicRaycaster
     - UnityEngine.UI.Image
     - UnityEngine.UI.InputField
@@ -54,6 +55,7 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.Shadow
     - UnityEngine.UI.Slider
     - UnityEngine.UI.Text
+    - UnityEngine.UI.VerticalLayoutGroup
     com.unity.multiplayer-hlapi.Runtime.dll:
     - UnityEngine.Networking.NetworkCallbacks
     - UnityEngine.Networking.NetworkIdentity
@@ -197,6 +199,8 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10050}
     - Class: 114
+      Script: {instanceID: 10190}
+    - Class: 114
       Script: {instanceID: 10262}
     - Class: 114
       Script: {instanceID: 10296}
@@ -222,6 +226,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 11198}
     - Class: 114
       Script: {instanceID: 11254}
+    - Class: 114
+      Script: {instanceID: 11326}
     - Class: 114
       Script: {instanceID: 11342}
     - Class: 114
@@ -1781,7 +1787,7 @@ ScriptsOnlyBuild:
     className: CountOfRoomsProperty
   - hash:
       serializedVersion: 2
-      Hash: 3ebdfc9f96d1230459ff920df55a1a31
+      Hash: 0e0419c64457ce8d98defabb75f028e2
     assemblyName: Assembly-CSharp.dll
     namespaceName: Solgae.FindSolgae
     className: PhotonInit
